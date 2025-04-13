@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="AppBackground">#121212</color>
+    <color name="CardAndContainer">#1E1E1E</color>
+    <color name="PrimaryText">#E0E0E0</color>
+    <color name="SecondaryText">#B0B0B0</color> <!-- Slightly lighter gray for better contrast -->
+    <color name="TertiaryText">#666666</color>
+    <color name="PrimaryButtonBackground">#FF6F40</color>
+    <color name="PrimaryButtonText">#F5F5F5</color>
+    <color name="SecondaryButtonBackground">#2C2C2C</color>
+    <color name="SecondaryButtonText">#E0E0E0</color>
+    <color name="AccentColor">#82B1FF</color>
+    <color name="AppBarBackground">#1A1A1A</color> <!-- Darker shade for AppBar -->
+    <color name="TabIconActive">#F5F5F5</color>
+    <color name="TabIconInactive">#AAAAAA</color>
+</resources>

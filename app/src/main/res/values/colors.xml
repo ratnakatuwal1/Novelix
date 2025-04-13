@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#212121</color>
+    <color name="white">#F5F5F5</color>
+    <color name="AppBackground">#FAF9F6</color>
+    <color name="CardAndContainer">#F8F8F8</color>
+    <color name="PrimaryText">#1A1A1A</color>
+    <color name="SecondaryText">#5A5A5A</color>
+    <color name="TertiaryText">#AAAAAA</color>
+    <color name="PrimaryButtonBackground">#E4572E</color>
+    <color name="PrimaryButtonText">#FFFFFF</color>
+    <color name="SecondaryButtonBackground">#F5E6DE</color>
+    <color name="SecondaryButtonText">#1A1A1A</color>
+    <color name="AccentColor">#3D5AFE</color>
+    <color name="AppBarBackground">#F5F5F5</color> <!-- Slightly lighter than CardAndContainer -->
+    <color name="TabIconActive">#1A1A1A</color>
+    <color name="TabIconInactive">#888888</color>
+</resources>
