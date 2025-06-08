@@ -22,11 +22,19 @@ public class WelcomeActivity extends AppCompatActivity {
     private SpringDotsIndicator dotsIndicator;
     private Button btnSkip;
     private ImageView btnBack, btnNext;
+    private PreferenceManager preferenceManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
+        preferenceManager = new PreferenceManager(this);
+
+        // Check if onboarding is already complete
+        if (preferenceManager.isOnboardingComplete()) {
+            startMainActivity();
+            return;
+        }
         setContentView(R.layout.activity_welcome);
 
         initializeViews();
@@ -71,7 +79,10 @@ public class WelcomeActivity extends AppCompatActivity {
             }
         });
 
-        btnSkip.setOnClickListener(v -> startMainActivity());
+       btnSkip.setOnClickListener(view -> {
+           Intent intent = new Intent(WelcomeActivity.this, LoginHome.class);
+           startActivity(intent);
+       });
     }
 
     private void updateUI(int position) {
@@ -90,7 +101,15 @@ public class WelcomeActivity extends AppCompatActivity {
     }
 
     public void startMainActivity() {
-        startActivity(new Intent(WelcomeActivity.this, MainActivity.class));
+        preferenceManager.setOnboardingComplete(true);
+        startActivity(new Intent(WelcomeActivity.this, LoginHome.class));
+        finish();
+    }
+
+    public void startLoginHomeActivity() {
+        // Mark onboarding as complete
+        preferenceManager.setOnboardingComplete(true);
+        startActivity(new Intent(WelcomeActivity.this, LoginHome.class));
         finish();
     }
 }

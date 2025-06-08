@@ -7,45 +7,49 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
 public class SplashScreen extends AppCompatActivity {
     private ImageView imageViewLogo;
-    private static final int SPLASH_DURATION = 2000; // 2 seconds
+    private static final int TOTAL_SPLASH_TIME = 2500; // Full screen duration in ms
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_splash_screen);
 
+        // Cinematic fade in
+        overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+
         imageViewLogo = findViewById(R.id.imageViewLogo);
-        Animation splashAnimation = AnimationUtils.loadAnimation(this, R.anim.splash_animation);
+
+        // Load cinematic splash animation
+        Animation splashAnimation = AnimationUtils.loadAnimation(this, R.anim.fade_zoom);
+        imageViewLogo.startAnimation(splashAnimation);
+
         splashAnimation.setAnimationListener(new Animation.AnimationListener() {
             @Override
             public void onAnimationStart(Animation animation) {
-                // Animation started
+                // Optional: Add sound effect here if needed
             }
 
             @Override
             public void onAnimationEnd(Animation animation) {
-                // Start next activity after animation ends
                 new Handler().postDelayed(() -> {
                     Intent intent = new Intent(SplashScreen.this, WelcomeActivity.class);
                     startActivity(intent);
-                    finish(); // Close splash activity
-                }, 500); // Small delay after animation
+
+                    // Apply fade transitions to keep cinematic mood
+                    overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+
+                    finish();
+                }, 300); // short pause for smoother transition
             }
 
             @Override
             public void onAnimationRepeat(Animation animation) {
+                // not used
             }
         });
-        // Start the animation
-        imageViewLogo.startAnimation(splashAnimation);
     }
 }

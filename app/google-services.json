@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "717505478551",
+    "project_id": "novelix-44447",
+    "storage_bucket": "novelix-44447.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:717505478551:android:08e012727a3a4bca2f0ed2",
+        "android_client_info": {
+          "package_name": "com.example.novelix"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA790udjAXprUt6E5nfL5WC4Wq2G0YEXWw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

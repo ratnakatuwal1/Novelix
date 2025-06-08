@@ -34,7 +34,7 @@ public class WelcomeFragment extends Fragment {
             Button btnGetStarted = view.findViewById(R.id.buttonGetStarted);
             btnGetStarted.setOnClickListener(v -> {
                 if (getActivity() instanceof WelcomeActivity) {
-                    ((WelcomeActivity) getActivity()).startMainActivity();
+                    ((WelcomeActivity) getActivity()).startLoginHomeActivity();
                 }
             });
         }

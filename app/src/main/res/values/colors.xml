@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <color name="error_red">#B00020</color>
     <color name="black">#212121</color>
     <color name="white">#F5F5F5</color>
     <color name="AppBackground">#FAF9F6</color>

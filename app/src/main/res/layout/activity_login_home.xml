@@ -120,7 +120,7 @@
         app:layout_constraintTop_toBottomOf="@+id/registerButton" />
 
     <ImageView
-        android:id="@+id/imageView4"
+        android:id="@+id/imageViewGoogleLogin"
         android:layout_width="@dimen/_60sdp"
         android:layout_height="@dimen/_60sdp"
         app:layout_constraintEnd_toEndOf="parent"
