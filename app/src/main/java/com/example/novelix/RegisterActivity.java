@@ -1,8 +1,11 @@
 package com.example.novelix;
 
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -14,20 +17,31 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
+import com.google.firebase.FirebaseNetworkException;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthUserCollisionException;
+import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 public class RegisterActivity extends AppCompatActivity {
     private TextInputEditText nameInput, addressInput, contactInput, emailInput, passwordInput, confirmPasswordInput;
+    private TextInputLayout passwordInputLayout, confirmPasswordInputLayout;
     private TextView textViewLogin;
     private AppCompatButton buttonRegister;
     private FirebaseAuth mAuth;
     private FirebaseFirestore db;
     private ProgressDialog progressDialog;
+
+    private static final Pattern NAME_PATTERN = Pattern.compile("^[A-Z][a-z]*(\\s[A-Z][a-z]*)+$");
+    private static final Pattern ADDRESS_PATTERN = Pattern.compile("^[a-zA-Z0-9\\s,.#-]+$");
+    private static final Pattern CONTACT_PATTERN = Pattern.compile("^[0-9]{10}$");
+    private static final Pattern PASSWORD_PATTERN = Pattern.compile("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,11 +51,16 @@ public class RegisterActivity extends AppCompatActivity {
 
         db = FirebaseFirestore.getInstance();
         mAuth = FirebaseAuth.getInstance();
-        progressDialog = new ProgressDialog(this);
-        progressDialog.setMessage("Registering...");
-        progressDialog.setCancelable(false);
+        setupProgressDialog();
         initializeViews();
         setupListeners();
+    }
+
+    private void setupProgressDialog() {
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setContentView(R.layout.progress_dialog);
+        progressDialog.setCancelable(false);
+        progressDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
     }
 
     private void initializeViews() {
@@ -52,10 +71,16 @@ public class RegisterActivity extends AppCompatActivity {
         emailInput = findViewById(R.id.email_input);
         passwordInput = findViewById(R.id.password_input);
         confirmPasswordInput = findViewById(R.id.confirm_password_input);
-
-        // Initialize buttons and clickable text
         buttonRegister = findViewById(R.id.buttonRegister);
         textViewLogin = findViewById(R.id.textViewLogin);
+        passwordInputLayout = findViewById(R.id.password_input_layout);
+        confirmPasswordInputLayout = findViewById(R.id.confirm_password_input_layout);
+
+        // Disable copy-paste for password fields
+        passwordInput.setTextIsSelectable(false);
+        passwordInput.setCustomSelectionActionModeCallback(null);
+        confirmPasswordInput.setTextIsSelectable(false);
+        confirmPasswordInput.setCustomSelectionActionModeCallback(null);
     }
 
     private void setupListeners() {
@@ -69,6 +94,37 @@ public class RegisterActivity extends AppCompatActivity {
             startActivity(new Intent(RegisterActivity.this, LoginActivity.class));
             finish();
         });
+
+        TextWatcher passwordWatcher = new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                String password = passwordInput.getText().toString().trim();
+                String confirmPassword = confirmPasswordInput.getText().toString().trim();
+                if (!confirmPassword.isEmpty()) {
+                    if (password.equals(confirmPassword)) {
+                        confirmPasswordInputLayout.setHelperText("Passwords match");
+                        confirmPasswordInputLayout.setHelperTextColor(getResources().getColorStateList(R.color.green));
+                    } else {
+                        confirmPasswordInputLayout.setHelperText("Passwords do not match");
+                        confirmPasswordInputLayout.setHelperTextColor(getResources().getColorStateList(R.color.error_red));
+                    }
+                } else {
+                    confirmPasswordInputLayout.setHelperText(null);
+                }
+            }
+    };
+        passwordInput.addTextChangedListener(passwordWatcher);
+        confirmPasswordInput.addTextChangedListener(passwordWatcher);
     }
 
     private boolean validateInputs() {
@@ -82,17 +138,26 @@ public class RegisterActivity extends AppCompatActivity {
 
         // Validate each field
         if (name.isEmpty()) {
-            nameInput.setError("Name is required");
+            nameInput.setError("Full Name is required");
+            return false;
+        } else if (!NAME_PATTERN.matcher(name).matches()) {
+            nameInput.setError("Enter valid full name");
             return false;
         }
 
         if (address.isEmpty()) {
             addressInput.setError("Address is required");
             return false;
+        } else if (!ADDRESS_PATTERN.matcher(address).matches()) {
+            addressInput.setError("Enter a valid address");
+            return false;
         }
 
         if (contact.isEmpty()) {
-            contactInput.setError("Contact is required");
+            contactInput.setError("Contact number is required");
+            return false;
+        } else if (!CONTACT_PATTERN.matcher(contact).matches()) {
+            contactInput.setError("Enter a valid 10-digit phone number");
             return false;
         }
 
@@ -132,11 +197,13 @@ public class RegisterActivity extends AppCompatActivity {
                 .addOnCompleteListener(this, task -> {
                     if (task.isSuccessful()) {
                         FirebaseUser user = mAuth.getCurrentUser();
+                        if (user != null) {
                         Map<String, Object> userData = new HashMap<>();
                         userData.put("name", name);
                         userData.put("address", address);
                         userData.put("contact", contact);
                         userData.put("email", email);
+                        userData.put("password", password);
                         userData.put("userId", user.getUid());
                         userData.put("role", "user");
 
@@ -144,13 +211,22 @@ public class RegisterActivity extends AppCompatActivity {
                                 .document(user.getUid())
                                 .set(userData)
                                 .addOnSuccessListener(aVoid -> {
-                                    sendEmailVerification(user);
+                                    progressDialog.dismiss();
+                                    Toast.makeText(RegisterActivity.this,
+                                            "Registration successful!",
+                                            Toast.LENGTH_LONG).show();
+                                    startActivity(new Intent(RegisterActivity.this, LoginActivity.class));
+                                    finish();
                                 })
                                 .addOnFailureListener(e -> {
                                     progressDialog.dismiss();
-                                    Toast.makeText(RegisterActivity.this,
-                                            "Failed to save user data: " + e.getMessage(),
-                                            Toast.LENGTH_LONG).show();
+                                    String errorMessage = "Failed to save user data.";
+                                    if (e instanceof FirebaseNetworkException) {
+                                        errorMessage = "Network error. Please check your internet connection.";
+                                    } else if (e.getMessage() != null) {
+                                        errorMessage = "Error: " + e.getMessage();
+                                    }
+                                    Toast.makeText(RegisterActivity.this, errorMessage, Toast.LENGTH_LONG).show();
                                 });
                     } else {
                         progressDialog.dismiss();
@@ -158,23 +234,21 @@ public class RegisterActivity extends AppCompatActivity {
                                 "Registration failed: " + task.getException().getMessage(),
                                 Toast.LENGTH_LONG).show();
                     }
-                });
-    }
-
-    private void sendEmailVerification(FirebaseUser user) {
-        user.sendEmailVerification()
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        Toast.makeText(RegisterActivity.this,
-                                "Registration successful! Please check your email for verification.",
-                                Toast.LENGTH_LONG).show();
-                        startActivity(new Intent(RegisterActivity.this, LoginActivity.class));
-                        finish();
-                    } else {
-                        Toast.makeText(RegisterActivity.this,
-                                "Failed to send verification email: " + task.getException().getMessage(),
-                                Toast.LENGTH_LONG).show();
-                    }
+                } else {
+            progressDialog.dismiss();
+            String errorMessage = "Registration failed.";
+            Exception exception = task.getException();
+            if (exception instanceof FirebaseAuthUserCollisionException) {
+                errorMessage = "This email is already registered.";
+            } else if (exception instanceof FirebaseAuthWeakPasswordException) {
+                errorMessage = "Password is too weak.";
+            } else if (exception instanceof FirebaseNetworkException) {
+                errorMessage = "Network error. Please check your internet connection.";
+            } else if (exception != null && exception.getMessage() != null) {
+                errorMessage = "Error: " + exception.getMessage();
+            }
+            Toast.makeText(RegisterActivity.this, errorMessage, Toast.LENGTH_LONG).show();
+        }
                 });
     }
 }

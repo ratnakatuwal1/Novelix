@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fillViewport="true"
     android:background="@color/AppBackground"
     tools:context=".RegisterActivity">
 
@@ -181,6 +182,7 @@
         android:layout_marginTop="@dimen/_6sdp"
         app:boxStrokeColor="@color/AccentColor"
         app:boxStrokeWidth="@dimen/_2sdp"
+        app:endIconMode="password_toggle"
         app:boxCornerRadiusTopStart="@dimen/_5sdp"
         app:boxCornerRadiusTopEnd="@dimen/_5sdp"
         app:boxCornerRadiusBottomStart="@dimen/_5sdp"
@@ -218,6 +220,7 @@
         app:boxCornerRadiusBottomEnd="@dimen/_5sdp"
         android:textColorHint="@color/AccentColor"
         app:hintTextColor="@color/AccentColor"
+        app:endIconMode="password_toggle"
         android:importantForAccessibility="yes"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

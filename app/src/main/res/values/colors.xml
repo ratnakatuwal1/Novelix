@@ -16,4 +16,5 @@
     <color name="AppBarBackground">#F5F5F5</color> <!-- Slightly lighter than CardAndContainer -->
     <color name="TabIconActive">#1A1A1A</color>
     <color name="TabIconInactive">#888888</color>
+    <color name="green">#FF4CAF50</color>
 </resources>

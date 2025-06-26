@@ -14,4 +14,5 @@
     <color name="AppBarBackground">#1A1A1A</color> <!-- Darker shade for AppBar -->
     <color name="TabIconActive">#F5F5F5</color>
     <color name="TabIconInactive">#AAAAAA</color>
+    <color name="green">#FF4CAF50</color>
 </resources>

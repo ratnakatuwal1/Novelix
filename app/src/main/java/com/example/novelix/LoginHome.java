@@ -1,6 +1,7 @@
 package com.example.novelix;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.ImageFormat;
 import android.os.Bundle;
 import android.util.Log;
@@ -48,6 +49,9 @@ import kotlinx.coroutines.Dispatchers;
 public class LoginHome extends AppCompatActivity {
     private static final String TAG = "LoginHome";
     private static final int RC_SIGN_IN = 9001;
+    private static final String PREFS_NAME = "NovelixPrefs";
+    private static final String KEY_LOGIN_TIMESTAMP = "login_timestamp";
+    private static final long SESSION_DURATION_SECONDS = 1500 * 3600L; // 1500 hours
     private ImageView imageViewGoogleLogin;
     private Button registerButton, loginButton;
     private ProgressBar progressBar;
@@ -79,8 +83,13 @@ public class LoginHome extends AppCompatActivity {
         super.onStart();
         // Check if user is signed in (non-null) and update UI accordingly
         FirebaseUser currentUser = mAuth.getCurrentUser();
-        if (currentUser != null) {
+        if (currentUser != null && isSessionValid()) {
             navigateToMainActivity();
+        } else if (currentUser != null) {
+            // Session expired, sign out user
+            mAuth.signOut();
+            clearLoginTimestamp();
+            Toast.makeText(this, "Session expired. Please sign in again.", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -88,18 +97,19 @@ public class LoginHome extends AppCompatActivity {
         imageViewGoogleLogin = findViewById(R.id.imageViewGoogleLogin);
         registerButton = findViewById(R.id.registerButton);
         loginButton = findViewById(R.id.loginButton);
+        progressBar = findViewById(R.id.progressBar);
     }
 
     private void setupListeners() {
         imageViewGoogleLogin.setOnClickListener(v -> signInWithGoogle());
 
         registerButton.setOnClickListener(v -> {
-            Intent intent = new Intent(LoginHome.this, LoginActivity.class);
+            Intent intent = new Intent(LoginHome.this, RegisterActivity.class);
             startActivity(intent);
         });
 
         loginButton.setOnClickListener(v -> {
-            Intent intent = new Intent(LoginHome.this, RegisterActivity.class);
+            Intent intent = new Intent(LoginHome.this, LoginActivity.class);
             startActivity(intent);
         });
     }
@@ -191,6 +201,7 @@ public class LoginHome extends AppCompatActivity {
                     showProgress(false);
                     if (task.isSuccessful()) {
                         Log.d(TAG, "signInWithCredential:success");
+                        saveLoginTimestamp();
                         navigateToMainActivity();
                     } else {
                         Log.w(TAG, "signInWithCredential:failure", task.getException());
@@ -250,5 +261,26 @@ public class LoginHome extends AppCompatActivity {
         if (progressBar != null) {
             progressBar.setVisibility(show ? View.VISIBLE : View.GONE);
         }
+    }
+
+    private void saveLoginTimestamp() {
+        SharedPreferences prefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putLong(KEY_LOGIN_TIMESTAMP, System.currentTimeMillis() / 1000);
+        editor.apply();
+    }
+
+    private boolean isSessionValid() {
+        SharedPreferences prefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
+        long loginTimestamp = prefs.getLong(KEY_LOGIN_TIMESTAMP, 0);
+        long currentTime = System.currentTimeMillis() / 1000;
+        return loginTimestamp > 0 && (currentTime - loginTimestamp) < SESSION_DURATION_SECONDS;
+    }
+
+    private void  clearLoginTimestamp() {
+        SharedPreferences prefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.remove(KEY_LOGIN_TIMESTAMP);
+        editor.apply();
     }
 }
