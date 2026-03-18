@@ -37,11 +37,18 @@ public class RegisterActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private FirebaseFirestore db;
     private ProgressDialog progressDialog;
+    private static final Pattern NAME_PATTERN =
+            Pattern.compile("^[A-Za-z]+(?: [A-Za-z]+)*$"); // Letters and spaces only
 
-    private static final Pattern NAME_PATTERN = Pattern.compile("^[A-Z][a-z]*(\\s[A-Z][a-z]*)+$");
-    private static final Pattern ADDRESS_PATTERN = Pattern.compile("^[a-zA-Z0-9\\s,.#-]+$");
-    private static final Pattern CONTACT_PATTERN = Pattern.compile("^[0-9]{10}$");
-    private static final Pattern PASSWORD_PATTERN = Pattern.compile("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$");
+    private static final Pattern ADDRESS_PATTERN =
+            Pattern.compile("^[a-zA-Z0-9\\s,.#-]{5,}$"); // Alphanumeric, at least 5 chars
+
+    private static final Pattern CONTACT_PATTERN =
+            Pattern.compile("^9[0-9]{9}$"); // 10 digits starting with 9
+
+    private static final Pattern PASSWORD_PATTERN =
+            Pattern.compile("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$"); // Strong password rule
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -141,46 +148,62 @@ public class RegisterActivity extends AppCompatActivity {
             nameInput.setError("Full Name is required");
             return false;
         } else if (!NAME_PATTERN.matcher(name).matches()) {
-            nameInput.setError("Enter valid full name");
+            nameInput.setError("Enter valid full name (letters only)");
             return false;
         }
 
         if (address.isEmpty()) {
             addressInput.setError("Address is required");
             return false;
-        } else if (!ADDRESS_PATTERN.matcher(address).matches()) {
-            addressInput.setError("Enter a valid address");
+        } else if (address.length() < 5 || !ADDRESS_PATTERN.matcher(address).matches()) {
+            addressInput.setError("Enter a valid address (at least 5 characters)");
             return false;
         }
 
         if (contact.isEmpty()) {
             contactInput.setError("Contact number is required");
             return false;
-        } else if (!CONTACT_PATTERN.matcher(contact).matches()) {
-            contactInput.setError("Enter a valid 10-digit phone number");
+        } else if (!Pattern.matches("^9[0-9]{9}$", contact)) {
+            contactInput.setError("Enter a valid 10-digit number (starting with 9)");
             return false;
         }
 
         if (email.isEmpty()) {
             emailInput.setError("Email is required");
             return false;
+        } else if (!email.equals(email.toLowerCase())) {
+            emailInput.setError("Email must be in lowercase (e.g., name@gmail.com)");
+            return false;
         } else if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            emailInput.setError("Please enter a valid email");
+            emailInput.setError("Please enter a valid email address");
+            return false;
+        } else if (!email.matches("^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,}$")) {
+            emailInput.setError("Enter a valid official email (e.g., name@gmail.com)");
             return false;
         }
 
         if (password.isEmpty()) {
             passwordInput.setError("Password is required");
             return false;
-        } else if (password.length() < 6) {
-            passwordInput.setError("Password must be at least 6 characters");
+        } else if (!PASSWORD_PATTERN.matcher(password).matches()) {
+            passwordInput.setError("Password must contain upper, lower, number & special character");
             return false;
         }
 
-        if (!confirmPassword.equals(password)) {
+        if (confirmPassword.isEmpty()) {
+            confirmPasswordInput.setError("Please confirm your password");
+            return false;
+        } else if (!confirmPassword.equals(password)) {
             confirmPasswordInput.setError("Passwords do not match");
             return false;
         }
+
+        nameInput.setError(null);
+        addressInput.setError(null);
+        contactInput.setError(null);
+        emailInput.setError(null);
+        passwordInput.setError(null);
+        confirmPasswordInput.setError(null);
 
         return true;
     }

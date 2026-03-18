@@ -5,25 +5,29 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Patterns;
-import android.view.View;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatButton;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import com.google.android.material.button.MaterialButton;
-import com.google.android.material.textfield.TextInputEditText;
-import com.google.firebase.FirebaseNetworkException;
+import com.example.novelix.LoginActivity;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseAuthInvalidUserException;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 public class ForgetPassword extends AppCompatActivity {
-    private TextInputEditText emailEditText;
-    private MaterialButton sendVerificationButton;
+    private EditText emailEditText;
+    private AppCompatButton sendVerificationButton;
+    private TextView backToSignIn;
+    private ImageView backButton;
     private FirebaseAuth mAuth;
+    private FirebaseFirestore firestore;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,22 +41,25 @@ public class ForgetPassword extends AppCompatActivity {
         });
 
         mAuth = FirebaseAuth.getInstance();
-        emailEditText = findViewById(R.id.enterEmail);
-        sendVerificationButton = findViewById(R.id.sendVerificationButton);
-        View backButton = findViewById(R.id.imageViewBack);
-        View backToSignIn = findViewById(R.id.backToSignIn);
+        firestore = FirebaseFirestore.getInstance();
+        emailEditText = findViewById(R.id.editTextEmail);
+        sendVerificationButton = findViewById(R.id.btnSendVerification);
+        backButton = findViewById(R.id.imageBack);
+        backToSignIn = findViewById(R.id.backToSignIn);
 
-        backButton.setOnClickListener(v -> finish());
+        backButton.setOnClickListener(v -> onBackPressed());
 
-        // Back to Sign In click listener
-        backToSignIn.setOnClickListener(v -> finish());
+        backToSignIn.setOnClickListener(v -> {
+            Intent intent = new Intent(ForgetPassword.this, LoginActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+            finish();
+        });
 
-        // Send verification code button click listener
         sendVerificationButton.setOnClickListener(v -> {
             String email = emailEditText.getText().toString().trim();
             if (validateEmail(email)) {
-                sendPasswordResetEmail(email);
-                Toast.makeText(ForgetPassword.this, "Verification code sent to " + email, Toast.LENGTH_SHORT).show();
+                checkEmailAndSendResetLink(email);
             } else {
                 emailEditText.setError("Please enter a valid email address");
                 emailEditText.requestFocus();
@@ -61,63 +68,77 @@ public class ForgetPassword extends AppCompatActivity {
     }
 
     private boolean validateEmail(String email) {
-            if (TextUtils.isEmpty(email)) {
-                emailEditText.setError("Email cannot be empty");
-                return false;
-            }
-
-            if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-                emailEditText.setError("Please enter a valid email address");
-                return false;
-            }
-
-            // Additional check for common typos
-            if (email.contains(" ")) {
-                emailEditText.setError("Email should not contain spaces");
-                return false;
-            }
-
-            if (!email.contains("@")) {
-                emailEditText.setError("Missing @ symbol in email");
-                return false;
-            }
-
-            return true;
+        if (TextUtils.isEmpty(email)) {
+            emailEditText.setError("Email cannot be empty");
+            return false;
         }
+        if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            emailEditText.setError("Please enter a valid email address");
+            return false;
+        }
+        if (email.contains(" ")) {
+            emailEditText.setError("Email should not contain spaces");
+            return false;
+        }
+        if (!email.contains("@")) {
+            emailEditText.setError("Missing @ symbol in email");
+            return false;
+        }
+        return true;
+    }
 
-    private void sendPasswordResetEmail(String email){
+    private void checkEmailAndSendResetLink(String email) {
         sendVerificationButton.setEnabled(false);
         ProgressDialog progressDialog = new ProgressDialog(this);
-        progressDialog.setMessage("Sending reset email...");
+        progressDialog.setMessage("Checking email...");
+        progressDialog.getWindow().setBackgroundDrawableResource(android.R.color.black);
+        progressDialog.getWindow().setDimAmount(0.8f);
         progressDialog.show();
 
+        // Check if email exists in Firestore 'users' collection
+        firestore.collection("users")
+                .whereEqualTo("email", email)
+                .get()
+                .addOnSuccessListener(querySnapshot -> {
+                    if (!querySnapshot.isEmpty()) {
+                        // Email exists in Firestore, proceed with password reset
+                        sendPasswordResetEmail(email, progressDialog);
+                    } else {
+                        // Email not found in Firestore
+                        progressDialog.dismiss();
+                        sendVerificationButton.setEnabled(true);
+                        emailEditText.setError("This email is not registered");
+                        emailEditText.requestFocus();
+                    }
+                })
+                .addOnFailureListener(e -> {
+                    progressDialog.dismiss();
+                    sendVerificationButton.setEnabled(true);
+                    Toast.makeText(ForgetPassword.this,
+                            "Failed to check email: " + e.getMessage(),
+                            Toast.LENGTH_LONG).show();
+                });
+    }
+
+    private void sendPasswordResetEmail(String email, ProgressDialog progressDialog) {
+        progressDialog.setMessage("Sending password reset email...");
         mAuth.sendPasswordResetEmail(email)
                 .addOnCompleteListener(task -> {
                     progressDialog.dismiss();
                     sendVerificationButton.setEnabled(true);
-
                     if (task.isSuccessful()) {
-                        Toast.makeText(ForgetPassword.this, "Password reset email sent to " + email, Toast.LENGTH_SHORT).show();
-                        // Navigate to Verification activity
-                        Intent intent = new Intent(ForgetPassword.this, Verification.class);
-                        intent.putExtra("email", email);
+                        Toast.makeText(ForgetPassword.this,
+                                "Password reset email sent to " + email,
+                                Toast.LENGTH_LONG).show();
+                        // Navigate back to LoginActivity
+                        Intent intent = new Intent(ForgetPassword.this, LoginActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                         startActivity(intent);
                         finish();
                     } else {
-                        try {
-                            throw task.getException();
-                        } catch (FirebaseAuthInvalidUserException e) {
-                            emailEditText.setError("No account found with this email");
-                            emailEditText.requestFocus();
-                        } catch (FirebaseNetworkException e) {
-                            Toast.makeText(ForgetPassword.this,
-                                    "Network error. Please check your connection.",
-                                    Toast.LENGTH_LONG).show();
-                        } catch (Exception e) {
-                            Toast.makeText(ForgetPassword.this,
-                                    "Failed to send reset email: " + e.getMessage(),
-                                    Toast.LENGTH_LONG).show();
-                        }
+                        Toast.makeText(ForgetPassword.this,
+                                "Failed to send reset email: " + task.getException().getMessage(),
+                                Toast.LENGTH_LONG).show();
                     }
                 });
     }

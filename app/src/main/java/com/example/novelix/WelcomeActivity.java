@@ -32,7 +32,7 @@ public class WelcomeActivity extends AppCompatActivity {
 
         // Check if onboarding is already complete
         if (preferenceManager.isOnboardingComplete()) {
-            startMainActivity();
+            redirectUser();
             return;
         }
         setContentView(R.layout.activity_welcome);
@@ -70,6 +70,9 @@ public class WelcomeActivity extends AppCompatActivity {
         btnNext.setOnClickListener(v -> {
             if (viewPager.getCurrentItem() < viewPager.getAdapter().getItemCount() - 1) {
                 viewPager.setCurrentItem(viewPager.getCurrentItem() + 1);
+            } else {
+                // On last page, complete onboarding and go to login
+                startLoginHomeActivity();
             }
         });
 
@@ -80,8 +83,7 @@ public class WelcomeActivity extends AppCompatActivity {
         });
 
        btnSkip.setOnClickListener(view -> {
-           Intent intent = new Intent(WelcomeActivity.this, LoginHome.class);
-           startActivity(intent);
+           startLoginHomeActivity();
        });
     }
 
@@ -100,9 +102,16 @@ public class WelcomeActivity extends AppCompatActivity {
         btnSkip.setVisibility(position == viewPager.getAdapter().getItemCount() - 1 ? View.GONE : View.VISIBLE);
     }
 
-    public void startMainActivity() {
-        preferenceManager.setOnboardingComplete(true);
-        startActivity(new Intent(WelcomeActivity.this, LoginHome.class));
+    private void redirectUser() {
+        if (preferenceManager.isLoggedIn()) {
+            // User is logged in, go to HomeFragment (assuming it's in MainActivity)
+            Intent intent = new Intent(this, MainActivity.class);
+            intent.putExtra("destination", "home_fragment");
+            startActivity(intent);
+        } else {
+            // User not logged in, go to LoginHome
+            startActivity(new Intent(this, LoginHome.class));
+        }
         finish();
     }
 

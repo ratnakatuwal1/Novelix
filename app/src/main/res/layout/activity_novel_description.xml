@@ -1,0 +1,270 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/AppBackground"
+    android:fillViewport="true"
+    android:scrollbarStyle="outsideOverlay"
+    android:scrollbarThumbVertical="@drawable/scrollbar_thumb"
+    android:scrollbars="vertical">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/main"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:context=".NovelDescription">
+
+        <!-- Novel Cover Image -->
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/novelCoverImageCardView"
+            android:layout_width="@dimen/_140sdp"
+            android:layout_height="@dimen/_190sdp"
+            android:layout_marginTop="@dimen/_15sdp"
+            app:cardCornerRadius="@dimen/_8sdp"
+            app:cardElevation="@dimen/_4sdp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/novelCoverImage"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/itendwithus"
+                    tools:ignore="ContentDescription" />
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="@dimen/_30sdp"
+                    android:layout_height="@dimen/_30sdp"
+                    android:layout_marginTop="@dimen/_4sdp"
+                    android:layout_marginEnd="@dimen/_4sdp"
+                    app:cardCornerRadius="@dimen/_15sdp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:id="@+id/favNovel"
+                            android:layout_width="@dimen/_20sdp"
+                            android:layout_height="@dimen/_20sdp"
+                            android:layout_gravity="end|top"
+                            android:layout_margin="@dimen/_8sdp"
+                            android:clickable="true"
+                            android:elevation="@dimen/_2sdp"
+                            android:focusable="true"
+                            android:src="@drawable/bookmark"
+                            android:tag="unfilled"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:tint="#DC1515"
+                            tools:ignore="ContentDescription" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+                </androidx.cardview.widget.CardView>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Novel Title -->
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/novelTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:fontFamily="@font/inter_bold"
+            android:text="It Ends With Us"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_18sdp"
+            app:layout_constraintEnd_toEndOf="@+id/novelCoverImageCardView"
+            app:layout_constraintStart_toStartOf="@+id/novelCoverImageCardView"
+            app:layout_constraintTop_toBottomOf="@+id/novelCoverImageCardView" />
+
+        <!-- Author Name -->
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/authorName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_4sdp"
+            android:fontFamily="@font/inter_regular"
+            android:text="Colleen Hoover"
+            android:textColor="@color/SecondaryText"
+            android:textSize="@dimen/_15sdp"
+            app:layout_constraintEnd_toEndOf="@+id/novelCoverImageCardView"
+            app:layout_constraintStart_toStartOf="@+id/novelCoverImageCardView"
+            app:layout_constraintTop_toBottomOf="@+id/novelTitle" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/language"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_4sdp"
+            android:fontFamily="@font/inter_regular"
+            android:text="English"
+            android:textColor="@color/SecondaryText"
+            android:textSize="@dimen/_15sdp"
+            app:layout_constraintEnd_toEndOf="@+id/authorName"
+            app:layout_constraintStart_toStartOf="@+id/authorName"
+            app:layout_constraintTop_toBottomOf="@+id/authorName" />
+
+        <!-- Novel Description with Scroll and Fade Effect -->
+        <FrameLayout
+            android:id="@+id/frameLayout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/_16sdp"
+            android:layout_marginTop="@dimen/_35sdp"
+            android:maxHeight="@dimen/_200sdp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/authorName">
+
+            <!-- Fade Effect Overlay -->
+            <androidx.core.widget.NestedScrollView
+                android:id="@+id/descriptionScrollView"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_150sdp"
+                android:clipToPadding="false"
+                android:fillViewport="true"
+                android:scrollbarStyle="outsideOverlay"
+                android:scrollbarThumbVertical="@drawable/scrollbar_thumb"
+                android:scrollbars="vertical"
+                app:cardBackgroundColor="#ffffff"
+                app:cardCornerRadius="@dimen/_8sdp"
+                app:cardElevation="@dimen/_2sdp">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/novelDescription"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/inter_regular"
+                    android:justificationMode="inter_word"
+                    android:lineSpacingExtra="@dimen/_4sdp"
+                    android:padding="@dimen/_12sdp"
+                    android:text="A poignant story of love, loss, and resilience, following Lily Bloom as she navigates a complex relationship and confronts her past. This emotionally charged novel explores themes of domestic abuse, personal strength, and the complexities of love, as Lily makes difficult choices to break free from a cycle of pain and build a future on her own terms. Colleen Hoover’s heartfelt storytelling weaves a narrative that is both heart-wrenching and uplifting, resonating with readers who appreciate raw, honest depictions of human relationships."
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_14sdp" />
+            </androidx.core.widget.NestedScrollView>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="24dp"
+                android:layout_gravity="bottom"
+                android:background="@drawable/fadr_gradient" />
+        </FrameLayout>
+
+        <!-- Novel Genre/Category RecyclerView with Fade Effect -->
+        <FrameLayout
+            android:id="@+id/genreFrameLayout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/_16sdp"
+            android:layout_marginTop="@dimen/_12sdp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/frameLayout">
+
+            <!-- Horizontal Fade Effect -->
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/genreRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clipToPadding="false"
+                android:orientation="horizontal"
+                android:overScrollMode="always"
+                android:paddingVertical="@dimen/_8sdp"
+                android:paddingStart="@dimen/_12sdp"
+                android:paddingEnd="@dimen/_12sdp"
+                android:scrollbarStyle="outsideOverlay"
+                android:scrollbarThumbHorizontal="@drawable/scrollbar_thumb"
+                android:scrollbars="horizontal"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:listitem="@layout/genre" />
+
+            <View
+                android:layout_width="24dp"
+                android:layout_height="0dp"
+                android:layout_gravity="end"
+                android:background="@drawable/fadr_gradient" />
+        </FrameLayout>
+
+        <!-- Novel ISBN -->
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/novelIsbn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/_16sdp"
+            android:layout_marginTop="@dimen/_12sdp"
+            android:fontFamily="@font/inter_regular"
+            android:text="ISBN: 978-1501110368"
+            android:textColor="@color/SecondaryText"
+            android:textSize="@dimen/_13sdp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/genreFrameLayout" />
+
+        <!-- Button Download Novel -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/downloadButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/_16sdp"
+            android:layout_marginTop="@dimen/_16sdp"
+            android:fontFamily="@font/inter_semibold"
+            android:paddingVertical="@dimen/_12sdp"
+            android:text="Download Novel"
+            android:textSize="@dimen/_14sdp"
+            app:cornerRadius="@dimen/_8sdp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/novelIsbn" />
+
+        <!-- Button Read in App -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/readInAppButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/_16sdp"
+            android:layout_marginTop="@dimen/_8sdp"
+            android:fontFamily="@font/inter_semibold"
+            android:paddingVertical="@dimen/_12sdp"
+            android:text="Read Novel in App"
+            android:textSize="@dimen/_14sdp"
+            app:cornerRadius="@dimen/_8sdp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/downloadButton" />
+
+        <!-- Add this View to activity_novel_description.xml -->
+        <View
+            android:id="@+id/overlayView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#80000000"
+            android:visibility="gone" />
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/loadingAnimation"
+            android:layout_width="@dimen/_50sdp"
+            android:layout_height="@dimen/_50sdp"
+            android:layout_below="@id/downloadButton"
+            android:layout_centerHorizontal="true"
+            android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:lottie_autoPlay="false"
+            app:lottie_fileName="loading_animation.json"
+            app:lottie_loop="true" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.core.widget.NestedScrollView>

@@ -52,13 +52,19 @@ dependencies {
     implementation ("com.intuit.sdp:sdp-android:1.1.1")
     implementation ("com.intuit.ssp:ssp-android:1.1.1")
     implementation ("androidx.viewpager2:viewpager2:1.1.0")
-    implementation ("com.tbuonomo:dotsindicator:4.3")
+    implementation ("com.tbuonomo:dotsindicator:5.1.0")
     implementation ("com.github.denzcoskun:ImageSlideshow:0.1.2")
-    implementation ("com.google.android.gms:play-services-auth:21.3.0")
+    implementation ("com.google.android.gms:play-services-auth:21.4.0")
     implementation ("androidx.credentials:credentials:1.5.0")
     implementation ("androidx.credentials:credentials-play-services-auth:1.5.0")
     implementation ("com.google.android.libraries.identity.googleid:googleid:1.1.1")
-    implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
-    implementation ("androidx.lifecycle:lifecycle-runtime-ktx:2.9.1") // or latest
+    implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.10.2")
+    implementation ("androidx.lifecycle:lifecycle-runtime-ktx:2.9.2") // or latest
+    implementation("com.github.bumptech.glide:glide:4.16.0")
+    implementation("com.squareup.okhttp3:okhttp:5.1.0")
+    implementation("org.json:json:20250517")
+    implementation("com.airbnb.android:lottie:6.6.7")
+    implementation("com.squareup.picasso:picasso:2.8")
 
+    implementation("com.github.mhiew:android-pdf-viewer:3.2.0-beta.3")
 }

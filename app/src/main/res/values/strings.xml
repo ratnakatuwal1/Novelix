@@ -4,3 +4,9 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="default_web_client_id">717505478551-83ug1gef780bgb6gtmrl54olr3tht5gd.apps.googleusercontent.com</string>
 </resources>
+
+    <!--    private static final String B2_BUCKET_ID = "4712c78cb635a77c987d0f18";-->
+    <!--    private static final String B2_KEY_ID = "005727c657c8df80000000002";-->
+    <!--    private static final String B2_APPLICATION_KEY = "K005IxPf8+b23o5U/NiUL9dm1g4cTu0"; // REPLACE with correct applicationKey-->
+    <!--    private static final String B2_BUCKET_NAME = "novelix-novel-Uploads";-->
+    <!--    private static final String B2_API_URL = "https://api005.backblazeb2.com";-->

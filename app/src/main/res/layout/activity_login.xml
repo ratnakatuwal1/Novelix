@@ -123,7 +123,7 @@
         android:layout_height="wrap_content"
         android:fontFamily="@font/inter_regular"
         android:text="Forget Password?"
-        android:textColor="@color/PrimaryText"
+        android:textColor="@color/AccentColor"
         android:textSize="@dimen/_16ssp"
         android:textStyle="bold"
         android:layout_marginTop="@dimen/_10sdp"

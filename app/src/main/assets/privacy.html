@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Novelix Privacy Policy</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1d4ed8;
+            --secondary: #f59e0b;
+            --dark: #1e293b;
+            --light: #f8fafc;
+            --gray: #64748b;
+            --border-radius: 12px;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --transition: all 0.3s ease;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            line-height: 1.8;
+            color: var(--dark);
+            background-color: var(--light);
+            margin: 0;
+            padding: 0;
+            font-size: 16px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 2rem 1.5rem;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 3rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            font-family: 'Playfair Display', serif;
+            color: var(--primary);
+            font-size: 2.5rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            line-height: 1.3;
+        }
+
+        .intro {
+            font-size: 1.1rem;
+            color: var(--gray);
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        h2 {
+            font-family: 'Playfair Display', serif;
+            color: var(--primary-dark);
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-top: 3rem;
+            margin-bottom: 1.5rem;
+            position: relative;
+            padding-left: 2.5rem;
+        }
+
+        h2::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 0.6rem;
+            width: 1.8rem;
+            height: 1.8rem;
+            background-color: var(--secondary);
+            border-radius: 50%;
+            opacity: 0.2;
+            z-index: -1;
+        }
+
+        .section {
+            background: white;
+            padding: 2rem;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            margin-bottom: 2rem;
+            transition: var(--transition);
+        }
+
+        .section:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+
+        p {
+            margin: 1rem 0;
+            color: var(--dark);
+        }
+
+        ul {
+            list-style-type: none;
+            padding-left: 0;
+            margin: 1.5rem 0;
+        }
+
+        li {
+            position: relative;
+            padding-left: 2rem;
+            margin-bottom: 0.8rem;
+        }
+
+        li::before {
+            content: "•";
+            color: var(--secondary);
+            font-size: 1.5rem;
+            position: absolute;
+            left: 0;
+            top: -0.3rem;
+        }
+
+        a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+            transition: var(--transition);
+            border-bottom: 1px dotted transparent;
+        }
+
+        a:hover {
+            color: var(--primary-dark);
+            border-bottom-color: var(--primary);
+        }
+
+        .highlight-box {
+            background-color: rgba(245, 158, 11, 0.1);
+            border-left: 4px solid var(--secondary);
+            padding: 1.5rem;
+            border-radius: 0 var(--border-radius) var(--border-radius) 0;
+            margin: 1.5rem 0;
+        }
+
+        .contact-info {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .contact-method {
+            flex: 1;
+            min-width: 200px;
+            background: white;
+            padding: 1.5rem;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .contact-icon {
+            width: 40px;
+            height: 40px;
+            background-color: var(--primary);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 4rem;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(0, 0, 0, 0.1);
+            color: var(--gray);
+        }
+
+        .last-updated {
+            font-weight: 500;
+            color: var(--primary-dark);
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1.5rem 1rem;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            h2 {
+                font-size: 1.3rem;
+                padding-left: 2rem;
+            }
+
+            .section {
+                padding: 1.5rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 1.8rem;
+            }
+
+            .intro {
+                font-size: 1rem;
+            }
+
+            .contact-method {
+                min-width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <header>
+        <h1>Novelix Privacy Policy</h1>
+        <p class="intro">At Novelix, we are committed to protecting your privacy and ensuring the security of your personal information. This Privacy Policy outlines how we collect, use, disclose, and safeguard your data when you use our novel reading application and related services.</p>
+    </header>
+
+    <div class="section">
+        <h2>1. Information We Collect</h2>
+        <p>To provide you with an exceptional reading experience, we collect various types of information:</p>
+        <ul>
+            <li><strong>Account Information:</strong> When you register, we collect your name, email address, and optional profile details.</li>
+            <li><strong>Reading Activity:</strong> We track your reading progress, bookmarks, library selections, and preferences to enhance your experience.</li>
+            <li><strong>Device Data:</strong> We collect information about your device including model, operating system, unique identifiers, and network information.</li>
+            <li><strong>Usage Analytics:</strong> We gather data about feature usage, session duration, and interaction patterns to improve our services.</li>
+        </ul>
+        <div class="highlight-box">
+            <p><strong>Note:</strong> We implement strict data minimization principles, collecting only what is necessary to deliver and improve our services.</p>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>2. How We Use Your Information</h2>
+        <p>Your data enables us to provide personalized and secure services:</p>
+        <ul>
+            <li>Customize your reading experience with tailored recommendations</li>
+            <li>Develop and enhance app functionality and performance</li>
+            <li>Provide customer support and respond to inquiries</li>
+            <li>Send service-related communications and (with consent) promotional content</li>
+            <li>Monitor and maintain app security and integrity</li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2>3. Information Sharing Practices</h2>
+        <p>We value your trust and maintain strict confidentiality:</p>
+        <ul>
+            <li><strong>Service Partners:</strong> We engage carefully vetted third-party providers for infrastructure, analytics, and payment processing under strict contractual obligations.</li>
+            <li><strong>Legal Compliance:</strong> We may disclose information when required by law or to protect our rights and users' safety.</li>
+            <li><strong>Business Transitions:</strong> In mergers or acquisitions, user information may be transferred as a business asset with appropriate protections.</li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2>4. Your Privacy Rights</h2>
+        <p>You maintain control over your personal information:</p>
+        <ul>
+            <li>Access, update, or delete your account information through app settings</li>
+            <li>Adjust communication preferences in your account dashboard</li>
+            <li>Request data export or deletion by contacting our privacy team</li>
+            <li>Withdraw consent for specific processing activities</li>
+        </ul>
+        <p>Depending on your jurisdiction, you may have additional rights under GDPR, CCPA, or other privacy regulations.</p>
+    </div>
+
+    <div class="section">
+        <h2>5. Data Security Measures</h2>
+        <p>We implement robust security protocols including:</p>
+        <ul>
+            <li>Industry-standard encryption for data in transit and at rest</li>
+            <li>Regular security audits and vulnerability testing</li>
+            <li>Strict access controls and authentication mechanisms</li>
+            <li>Comprehensive employee training on data protection</li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2>6. Cookies and Tracking Technologies</h2>
+        <p>We use essential and functional cookies to:</p>
+        <ul>
+            <li>Maintain user sessions and preferences</li>
+            <li>Analyze service performance and usage patterns</li>
+            <li>Support security features and fraud prevention</li>
+        </ul>
+        <p>You can manage cookie preferences through your browser settings, though this may impact functionality.</p>
+    </div>
+
+    <div class="section">
+        <h2>7. Children's Privacy Protection</h2>
+        <p>Our services are designed for users aged 13 and older. We do not knowingly collect data from children under 13. If we discover such collection, we will promptly delete the information and terminate the account.</p>
+    </div>
+
+    <div class="section">
+        <h2>8. International Data Transfers</h2>
+        <p>Your information may be processed globally. We ensure adequate safeguards through:</p>
+        <ul>
+            <li>EU Standard Contractual Clauses</li>
+            <li>Data processing agreements with international partners</li>
+            <li>Adherence to international privacy frameworks</li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2>9. Policy Updates</h2>
+        <p>We may periodically update this policy to reflect:</p>
+        <ul>
+            <li>Changes in our services or data practices</li>
+            <li>Evolving legal and regulatory requirements</li>
+            <li>Feedback from our user community</li>
+        </ul>
+        <p>Significant changes will be communicated through in-app notifications or email.</p>
+    </div>
+
+    <div class="section">
+        <h2>10. Contact Information</h2>
+        <p>For privacy-related inquiries or requests, please contact our Data Protection Officer:</p>
+
+        <div class="contact-info">
+            <div class="contact-method">
+                <div class="contact-icon">✉️</div>
+                <div>
+                    <strong>Email</strong><br>
+                    <a href="mailto:privacy@novelix.com">privacy@novelix.com</a>
+                </div>
+            </div>
+
+            <div class="contact-method">
+                <div class="contact-icon">📮</div>
+                <div>
+                    <strong>Mail</strong><br>
+                    Novelix Privacy Office<br>
+                    123 Story Lane, Suite 450<br>
+                    Bookville, BX 12345
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p class="last-updated">Effective Date: June 2, 2025</p>
+        <p>© 2025 Novelix Inc. All rights reserved.</p>
+    </footer>
+</div>
+</body>
+</html>

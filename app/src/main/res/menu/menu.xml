@@ -15,7 +15,7 @@
     <item
         android:id="@+id/bookmarkFragment2"
         android:icon="@drawable/bookmark"
-        android:title="Bookmark" />
+        android:title="Favourites" />
     <item
         android:id="@+id/accountFragment2"
         android:icon="@drawable/user"

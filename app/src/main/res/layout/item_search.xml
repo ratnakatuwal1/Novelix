@@ -2,23 +2,106 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
     android:padding="12dp"
     android:background="?attr/selectableItemBackground">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView7"
-        android:layout_width="@dimen/_80sdp"
+        android:layout_width="match_parent"
         android:layout_height="@dimen/_140sdp"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <ImageView
-            android:id="@+id/imageView5"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:scaleType="fitXY"
-            android:src="@drawable/itendwithus" />
-    </androidx.cardview.widget.CardView>
+            android:layout_height="match_parent">
 
+            <!-- Cover Image -->
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/coverImage"
+                android:layout_width="@dimen/_90sdp"
+                android:layout_height="@dimen/_120sdp"
+                android:scaleType="fitXY"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <!-- Bookmark Icon -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="@dimen/_30sdp"
+                android:layout_height="@dimen/_30sdp"
+                android:layout_marginTop="@dimen/_4sdp"
+                android:layout_marginEnd="@dimen/_4sdp"
+                app:cardCornerRadius="@dimen/_15sdp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/favNovel"
+                        android:layout_width="@dimen/_20sdp"
+                        android:layout_height="@dimen/_20sdp"
+                        android:layout_gravity="end|top"
+                        android:layout_margin="@dimen/_8sdp"
+                        android:clickable="true"
+                        android:elevation="@dimen/_2sdp"
+                        android:focusable="true"
+                        android:src="@drawable/bookmark"
+                        android:tag="unfilled"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:tint="#DC1515"
+                        tools:ignore="ContentDescription" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- Novel Name -->
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/novelName"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:layout_marginEnd="8dp"
+                android:fontFamily="@font/inter_bold"
+                android:text=""
+                android:textSize="@dimen/_16sdp"
+                android:maxLines="1"
+                android:ellipsize="end"
+                app:layout_constraintStart_toEndOf="@+id/coverImage"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toTopOf="@+id/novelAutherName" />
+
+            <!-- Author Name -->
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/novelAutherName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/inter_bold"
+                android:text=""
+                android:textSize="@dimen/_16sdp"
+                app:layout_constraintBottom_toTopOf="@+id/genre"
+                app:layout_constraintStart_toStartOf="@+id/novelName"
+                app:layout_constraintTop_toBottomOf="@+id/novelName" />
+
+            <!-- Genre -->
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/genre"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/inter_bold"
+                android:text=""
+                android:textSize="@dimen/_16sdp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/novelAutherName"
+                app:layout_constraintTop_toBottomOf="@+id/novelAutherName" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
 </androidx.constraintlayout.widget.ConstraintLayout>
